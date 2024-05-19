@@ -10,7 +10,7 @@ const Post = () => {
     setLoader(true);
     const getAllPost = databases.listDocuments(
       "6648c89f00135cfcab19",
-      "6648c8b6001e2ac3de30"
+      "6648c8b6001e2ac3de30",
     );
 
     getAllPost.then(
@@ -62,16 +62,21 @@ const Post = () => {
     );
   };
 
+  if (allposts) {
+    console.log("yes posts");
+  }else {
+    console.log("no posts");
+  }
   return (
     <>
       {loader ? (
         <p>Loading...</p>
       ) : (
         <>
-          {" "}
+        
           {allposts &&
             allposts.map((item) => (
-              <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+              <div key={item.$id} className="w-full max-w-sm bg-gray-500 border-gray-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <div className="flex flex-col gap-2 items-end px-4 pt-4 relative">
                   <button
                     id="dropdownButton"
