@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { databases } from "../../appwrite/appwriteConfig";
 
 const Post = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState({});
   const [allposts, setAllPosts] = useState();
   const [loader, setLoader] = useState(false);
 
@@ -10,7 +10,7 @@ const Post = () => {
     setLoader(true);
     const getAllPost = databases.listDocuments(
       "6648c89f00135cfcab19",
-      "6648c8b6001e2ac3de30",
+      "6648c8b6001e2ac3de30"
     );
 
     getAllPost.then(
@@ -25,8 +25,11 @@ const Post = () => {
     setLoader(false);
   }, []);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+  const toggleDropdown = (id) => {
+    setDropdownOpen((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id],
+    }));
   };
 
   const editPost = (id) => {
@@ -62,26 +65,28 @@ const Post = () => {
     );
   };
 
-  if (allposts) {
-    console.log("yes posts");
-  }else {
-    console.log("no posts");
-  }
+  // if (allposts) {
+  //   console.log("yes posts");
+  // } else {
+  //   console.log("no posts");
+  // }
   return (
     <>
       {loader ? (
         <p>Loading...</p>
       ) : (
         <>
-        
           {allposts &&
             allposts.map((item) => (
-              <div key={item.$id} className="w-full max-w-sm bg-gray-500 border-gray-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+              <div
+                key={item.$id}
+                className="w-full max-w-sm bg-gray-500 border-gray-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+              >
                 <div className="flex flex-col gap-2 items-end px-4 pt-4 relative">
                   <button
                     id="dropdownButton"
-                    onClick={toggleDropdown}
-                    className="inline-block text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
+                    onClick={() => toggleDropdown(item.$id)}
+                    className="inline-block text-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-1.5"
                     type="button"
                   >
                     <span className="sr-only">Open dropdown</span>
@@ -99,8 +104,8 @@ const Post = () => {
                   <div
                     id="dropdown"
                     className={`absolute top-14 right-1 z-10 ${
-                      dropdownOpen ? "block" : "hidden"
-                    } text-start text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
+                      dropdownOpen[item.$id] ? "block" : "hidden"
+                    } text-start text-base list-none bg-gray-500 divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700`}
                   >
                     <ul className="py-2" aria-labelledby="dropdownButton">
                       <li>
@@ -143,7 +148,7 @@ const Post = () => {
                     </a>
                     <a
                       href="#"
-                      className="py-2 px-8 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                      className="py-2 px-8 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-gray-900 dark:hover:bg-gray-700"
                     >
                       Share
                     </a>

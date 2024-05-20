@@ -41,7 +41,7 @@ const Profile = () => {
             </div>
           </div>
           <PostForm />
-          <div className="flex flex-wrap justify-between gap-5">
+          <div className="flex flex-wrap gap-4">
             <Post />
           </div>
         </>
