@@ -1,29 +1,31 @@
 import { useEffect, useState } from "react";
 import { databases } from "../../appwrite/appwriteConfig";
 
-const Post = () => {
+const Post = ({posts,setPosts}) => {
   const [dropdownOpen, setDropdownOpen] = useState({});
-  const [allposts, setAllPosts] = useState();
+  // const [allposts, setAllPosts] = useState([]);
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
-    setLoader(true);
-    const getAllPost = databases.listDocuments(
-      "6648c89f00135cfcab19",
-      "6648c8b6001e2ac3de30"
-    );
-
-    getAllPost.then(
-      function (response) {
-        console.log(response);
-        setAllPosts(response.documents);
-      },
-      function (error) {
-        console.log(error);
-      }
-    );
-    setLoader(false);
+    fetchPosts()
   }, []);
+
+  const fetchPosts = async () => {
+    try {
+      setLoader(true);
+      const response = await databases.listDocuments(
+        "6648c89f00135cfcab19",
+        "6648c8b6001e2ac3de30"
+      );
+      console.log(response.documents);
+      setPosts(response.documents);
+      setLoader(false)
+    } catch (error) {
+      console.error("Failed to fetch posts:", error.message);
+      setLoader(false)
+
+    }
+  };
 
   const toggleDropdown = (id) => {
     setDropdownOpen((prevState) => ({
@@ -58,6 +60,7 @@ const Post = () => {
     promise.then(
       function (response) {
         console.log(response);
+        setDropdownOpen(false);
       },
       function (error) {
         console.log(error);
@@ -76,8 +79,8 @@ const Post = () => {
         <p>Loading...</p>
       ) : (
         <>
-          {allposts &&
-            allposts.map((item) => (
+          {posts &&
+            posts.map((item) => (
               <div
                 key={item.$id}
                 className="w-full max-w-sm bg-gray-500 border-gray-400 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"

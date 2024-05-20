@@ -41,9 +41,6 @@ const Profile = () => {
             </div>
           </div>
           <PostForm />
-          <div className="flex flex-wrap gap-4">
-            <Post />
-          </div>
         </>
       ) : (
         <div className="bg-white p-4">
