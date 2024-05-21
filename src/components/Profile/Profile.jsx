@@ -48,7 +48,7 @@ const Profile = () => {
     <>
       {isLoggedIn && isLoggedIn ? (
         <>
-          <div className="p-2 bg-purple-400 flex justify-between">
+          <div className="p-2 px-3 rounded-md bg-[#699da7] flex justify-between">
             <h1 className="text-3xl  text-white">Welcome, {isLoggedIn.name}</h1>
             <div className="flex gap-2">
               <button className="btn btn-secondary rounded-xl" onClick={() => navigate("/update-password")}>
