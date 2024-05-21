@@ -71,6 +71,11 @@ const Post = ({ posts, setPosts }) => {
         "6648c8b6001e2ac3de30",
         id
       );
+      Swal.fire({
+        // title: "The Internet?",
+        text: "Your post has been deleted successfully.",
+        icon: "error"
+      });
       setPosts(posts.filter((post) => post.$id !== id));
     } catch (error) {
       console.error("Failed to delete post:", error.message);

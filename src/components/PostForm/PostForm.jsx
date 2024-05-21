@@ -23,7 +23,13 @@ const PostForm = () => {
     promise.then(
       function (response) {
         console.log(response);
-        setPosts([...posts, response]);
+        Swal.fire({
+          icon: "success",
+          title: "Your post has been created successfully",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        setPosts([...posts, response]); 
       },
       function (error) {
         console.log(error);
@@ -78,7 +84,7 @@ const PostForm = () => {
         </form>
       </div>
       <div className="flex flex-wrap gap-4">
-          <Post posts={posts} setPosts={setPosts} />
+        <Post posts={posts} setPosts={setPosts} />
       </div>
     </>
   );
