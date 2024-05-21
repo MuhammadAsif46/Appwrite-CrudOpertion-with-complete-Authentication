@@ -20,6 +20,12 @@ const SignupForm = () => {
     promise.then(
       function (response) {
         console.log(response);
+        Swal.fire({
+          icon: "success",
+          title: "your accout has been created please login!",
+          showConfirmButton: false,
+          timer: 3000,
+        });
         navigate("/");
       },
       function (error) {

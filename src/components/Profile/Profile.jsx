@@ -51,7 +51,7 @@ const Profile = () => {
           <div className="p-2 bg-purple-400 flex justify-between">
             <h1 className="text-3xl  text-white">Welcome, {isLoggedIn.name}</h1>
             <div className="flex gap-2">
-              <button className="btn btn-secondary rounded-xl">
+              <button className="btn btn-secondary rounded-xl" onClick={() => navigate("/update-password")}>
                 Update Password
               </button>
               <button

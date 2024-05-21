@@ -16,6 +16,12 @@ const AntdForm = () => {
     promise.then(
       function (response) {
         console.log(response); // Success
+        Swal.fire({
+          icon: "success",
+          title: "you are logged in successfully ",
+          showConfirmButton: false,
+          timer: 1000,
+        });
         navigate("/profile");
       },
       function (error) {

@@ -16,7 +16,12 @@ const UpdatePasswordForm = () => {
       // Attempt to update the password
       const response = await account.updatePassword(newPassword, oldPassword);
       console.log("Password updated successfully:", response);
-      alert("Password updated successfully");
+      Swal.fire({
+        icon: "success",
+        title: "Your password updated successfully!",
+        timer: 3000,
+      });
+      
       navigate("/profile");
     } catch (error) {
       // Handle any errors that occur during the password update
