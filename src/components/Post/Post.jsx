@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { databases } from "../../appwrite/appwriteConfig";
 
-const Post = ({posts,setPosts}) => {
+const Post = ({ posts, setPosts }) => {
   const [dropdownOpen, setDropdownOpen] = useState({});
   // const [allposts, setAllPosts] = useState([]);
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
-    fetchPosts()
+    fetchPosts();
   }, []);
 
   const fetchPosts = async () => {
@@ -19,11 +19,10 @@ const Post = ({posts,setPosts}) => {
       );
       console.log(response.documents);
       setPosts(response.documents);
-      setLoader(false)
+      setLoader(false);
     } catch (error) {
       console.error("Failed to fetch posts:", error.message);
-      setLoader(false)
-
+      setLoader(false);
     }
   };
 
@@ -34,45 +33,33 @@ const Post = ({posts,setPosts}) => {
     }));
   };
 
-  const editPost = (id) => {
-    const promise = databases.updateDocument(
-      "6648c89f00135cfcab19",
-      "6648c8b6001e2ac3de30",
-      id,
-      {}
-    );
-    promise.then(
-      function (response) {
-        console.log(response);
-      },
-      function (error) {
-        console.log(error);
-      }
-    );
+  const editPost = async(id) => {
+    try {
+      const response = await databases.updateDocument(
+        "6648c89f00135cfcab19",
+        "6648c8b6001e2ac3de30",
+        id,
+        updatePost
+      );
+      setPosts(posts.filter((post) => post.$id !== id))
+    } catch (error) {
+      console.error("Failed to delete post:", error.message);
+    }
   };
 
-  const deletePost = (id) => {
-    const promise = databases.deleteDocument(
-      "6648c89f00135cfcab19",
-      "6648c8b6001e2ac3de30",
-      id
-    );
-    promise.then(
-      function (response) {
-        console.log(response);
-        setDropdownOpen(false);
-      },
-      function (error) {
-        console.log(error);
-      }
-    );
+  const deletePost = async (id) => {
+    try {
+      await databases.deleteDocument(
+        "6648c89f00135cfcab19",
+        "6648c8b6001e2ac3de30",
+        id
+      );
+      setPosts(posts.filter((post) => post.$id !== id))
+    } catch (error) {
+      console.error("Failed to delete post:", error.message);
+    }
   };
 
-  // if (allposts) {
-  //   console.log("yes posts");
-  // } else {
-  //   console.log("no posts");
-  // }
   return (
     <>
       {loader ? (
@@ -114,7 +101,7 @@ const Post = ({posts,setPosts}) => {
                       <li>
                         <a
                           onClick={() => editPost(item.$id)}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                          className="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                         >
                           Edit
                         </a>
@@ -130,7 +117,7 @@ const Post = ({posts,setPosts}) => {
                       <li>
                         <a
                           onClick={() => deletePost(item.$id)}
-                          className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                          className="block px-4 py-2 text-sm cursor-pointer text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                         >
                           Delete
                         </a>
@@ -138,7 +125,7 @@ const Post = ({posts,setPosts}) => {
                     </ul>
                   </div>
                 </div>
-                <div className="flex flex-col items-center pb-10">
+                <div className="flex flex-col items-center pb-10 ">
                   <h5 className="mb-1 text-xl text-center px-10 font-medium text-gray-900 dark:text-white">
                     {item.post}
                   </h5>
