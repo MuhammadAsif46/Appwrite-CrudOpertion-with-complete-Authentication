@@ -58,25 +58,38 @@ const Post = ({ posts, setPosts }) => {
       );
       setEditPost(null);
       // setEditPost(null)
-      console.log("posts->" , posts);
+      console.log("posts->", posts);
     } catch (error) {
       console.error("Failed to delete post:", error.message);
     }
   };
 
-  const deletePost = async (id) => {
+  const deletePost = (id) => {
+    setDropdownOpen(false);
     try {
-      await databases.deleteDocument(
-        "6648c89f00135cfcab19",
-        "6648c8b6001e2ac3de30",
-        id
-      );
       Swal.fire({
-        // title: "The Internet?",
-        text: "Your post has been deleted successfully.",
-        icon: "error"
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+          await databases.deleteDocument(
+            "6648c89f00135cfcab19",
+            "6648c8b6001e2ac3de30",
+            id
+          );
+          setPosts(posts.filter((post) => post.$id !== id));
+        }
       });
-      setPosts(posts.filter((post) => post.$id !== id));
     } catch (error) {
       console.error("Failed to delete post:", error.message);
     }

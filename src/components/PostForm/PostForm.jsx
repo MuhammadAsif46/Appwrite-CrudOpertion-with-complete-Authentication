@@ -19,7 +19,6 @@ const PostForm = () => {
         post,
       }
     );
-    // console.log(promise);
     promise.then(
       function (response) {
         console.log(response);
@@ -27,7 +26,7 @@ const PostForm = () => {
           icon: "success",
           title: "Your post has been created successfully",
           showConfirmButton: false,
-          timer: 1500,
+          timer: 1000,
         });
         setPosts([...posts, response]); 
       },
