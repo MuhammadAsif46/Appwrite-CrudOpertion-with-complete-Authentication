@@ -42,23 +42,33 @@ const Post = ({ posts, setPosts }) => {
   };
 
   const editPostHandler = async (id) => {
+    setDropdownOpen(false)
     try {
-      const updatedPost = { post: editContent };
-      const response = await databases.updateDocument(
-        "6648c89f00135cfcab19",
-        "6648c8b6001e2ac3de30",
-        id,
-        updatedPost
-      );
-      console.log(response.post);
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post.$id === id ? { ...post, post: response.post } : post
-        )
-      );
-      setEditPost(null);
-      // setEditPost(null)
-      console.log("posts->", posts);
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Save",
+        confirmButtonColor: "#3085d6",
+      }).then(async (result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          const updatedPost = { post: editContent };
+          const response = await databases.updateDocument(
+            "6648c89f00135cfcab19",
+            "6648c8b6001e2ac3de30",
+            id,
+            updatedPost
+          );
+          setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+              post.$id === id ? { ...post, post: response.post } : post
+            )
+          );
+          setEditPost(null);
+          Swal.fire("Saved!", "", "success");
+        }
+      });
     } catch (error) {
       console.error("Failed to delete post:", error.message);
     }
