@@ -20,10 +20,27 @@ const Profile = () => {
 
   const logoutHandler = async () => {
     try {
-      await account.deleteSession("current");
-      navigate("/");
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Sure",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Logout!",
+            text: "Your session has been deleted.",
+            icon: "success",
+          });
+          await account.deleteSession("current");
+          navigate("/");
+        }
+      });
     } catch (error) {
-      console.log(error);
+      console.error("Failed to logout:", error.message);
     }
   };
 
@@ -31,13 +48,18 @@ const Profile = () => {
     <>
       {isLoggedIn && isLoggedIn ? (
         <>
-          <div className="p-2 bg-purple-400 flex justify-between" >
-            <h1 className="text-3xl  text-white">
-              Welcome, {isLoggedIn.name}
-            </h1>
+          <div className="p-2 bg-purple-400 flex justify-between">
+            <h1 className="text-3xl  text-white">Welcome, {isLoggedIn.name}</h1>
             <div className="flex gap-2">
-              <button className="btn btn-secondary rounded-xl">Update Password</button>
-              <button className="btn btn-danger rounded-xl">Logout</button>
+              <button className="btn btn-secondary rounded-xl">
+                Update Password
+              </button>
+              <button
+                onClick={logoutHandler}
+                className="btn btn-danger rounded-xl"
+              >
+                Logout
+              </button>
             </div>
           </div>
           <PostForm />
