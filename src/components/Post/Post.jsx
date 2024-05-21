@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { databases } from "../../appwrite/appwriteConfig";
 
 const Post = ({ posts, setPosts }) => {
+  // console.log(posts);
   const [dropdownOpen, setDropdownOpen] = useState({});
-  // const [allposts, setAllPosts] = useState([]);
+  const [editPost, setEditPost] = useState(null);
+  const [editContent, setEditContent] = useState("");
   const [loader, setLoader] = useState(false);
 
   useEffect(() => {
@@ -33,15 +35,30 @@ const Post = ({ posts, setPosts }) => {
     }));
   };
 
-  const editPost = async(id) => {
+  const startEditing = (id, content) => {
+    setDropdownOpen(false);
+    setEditPost(id);
+    setEditContent(content);
+  };
+
+  const editPostHandler = async (id) => {
     try {
+      const updatedPost = { post: editContent };
       const response = await databases.updateDocument(
         "6648c89f00135cfcab19",
         "6648c8b6001e2ac3de30",
         id,
-        updatePost
+        updatedPost
       );
-      setPosts(posts.filter((post) => post.$id !== id))
+      console.log(response.post);
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.$id === id ? { ...post, post: response.post } : post
+        )
+      );
+      setEditPost(null);
+      // setEditPost(null)
+      console.log("posts->" , posts);
     } catch (error) {
       console.error("Failed to delete post:", error.message);
     }
@@ -54,7 +71,7 @@ const Post = ({ posts, setPosts }) => {
         "6648c8b6001e2ac3de30",
         id
       );
-      setPosts(posts.filter((post) => post.$id !== id))
+      setPosts(posts.filter((post) => post.$id !== id));
     } catch (error) {
       console.error("Failed to delete post:", error.message);
     }
@@ -100,7 +117,7 @@ const Post = ({ posts, setPosts }) => {
                     <ul className="py-2" aria-labelledby="dropdownButton">
                       <li>
                         <a
-                          onClick={() => editPost(item.$id)}
+                          onClick={() => startEditing(item.$id, item.post)}
                           className="block px-4 py-2 text-sm cursor-pointer text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                         >
                           Edit
@@ -126,23 +143,41 @@ const Post = ({ posts, setPosts }) => {
                   </div>
                 </div>
                 <div className="flex flex-col items-center pb-10 ">
-                  <h5 className="mb-1 text-xl text-center px-10 font-medium text-gray-900 dark:text-white">
-                    {item.post}
-                  </h5>
-                  <div className="flex mt-4 md:mt-6">
-                    <a
-                      href="#"
-                      className="inline-flex items-center px-10 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    >
-                      Like
-                    </a>
-                    <a
-                      href="#"
-                      className="py-2 px-8 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-gray-900 dark:hover:bg-gray-700"
-                    >
-                      Share
-                    </a>
-                  </div>
+                  {editPost === item.$id ? (
+                    <>
+                      <textarea
+                        value={editContent}
+                        onChange={(e) => setEditContent(e.target.value)}
+                        className="mb-2 bg-slate-400 text-xl px-10 font-medium text-gray-900 dark:text-gray-800"
+                      />
+                      <button
+                        onClick={() => editPostHandler(item.$id)}
+                        className="px-4 py-2 bg-blue-500 text-white rounded"
+                      >
+                        Save
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <h5 className="mb-1 text-xl text-center px-10 font-medium text-gray-900 dark:text-white">
+                        {item.post}
+                      </h5>
+                      <div className="flex mt-4 md:mt-6">
+                        <a
+                          href="#"
+                          className="inline-flex items-center px-10 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        >
+                          Like
+                        </a>
+                        <a
+                          href="#"
+                          className="py-2 px-8 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-gray-900 dark:hover:bg-gray-700"
+                        >
+                          Share
+                        </a>
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
