@@ -18,10 +18,10 @@ const UpdatePasswordForm = () => {
       console.log("Password updated successfully:", response);
       Swal.fire({
         icon: "success",
-        title: "Your password updated successfully!",
-        timer: 3000,
+        title: "your password updated successfully ",
+        showConfirmButton: false,
+        timer: 1500,
       });
-      
       navigate("/profile");
     } catch (error) {
       // Handle any errors that occur during the password update
