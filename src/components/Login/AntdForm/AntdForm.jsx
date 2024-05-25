@@ -100,14 +100,6 @@ const AntdForm = () => {
           </Button>
         </Form.Item>
 
-        {/* <div>
-          <Link
-            to="/update-password"
-            className="text-blue-800 hover:bg-slate-300 p-2 rounded-lg hover:text-b"
-          >
-            Forgot password
-          </Link>
-        </div> */}
       </Form>
     </>
   );

@@ -15,7 +15,7 @@ const UpdatePasswordForm = () => {
     try {
       // Attempt to update the password
       const response = await account.updatePassword(newPassword, oldPassword);
-      console.log("Password updated successfully:", response);
+      // console.log("Password updated successfully:", response);
       Swal.fire({
         icon: "success",
         title: "your password updated successfully ",
@@ -60,16 +60,16 @@ const UpdatePasswordForm = () => {
 
         <Form.Item
           name="oldPassword"
-          // rules={[
-          //   {
-          //     required: true,
-          //     message: "Please input your oldpassword!",
-          //   },
-          // ]}
+          rules={[
+            {
+              required: true,
+              message: "Please input your oldpassword!",
+            },
+          ]}
         >
           <Input.Password
             className="w-96"
-            placeholder="Oldpassword(optional)"
+            placeholder="Oldpassword"
           />
         </Form.Item>
 

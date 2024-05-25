@@ -13,7 +13,6 @@ const SignupForm = () => {
 
     const { email, password, username } = values;
 
-    // console.log(email, password, username);
 
     const promise = account.create(uuidv4(), email, password, username);
 

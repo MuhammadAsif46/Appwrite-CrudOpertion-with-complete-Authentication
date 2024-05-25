@@ -3,6 +3,7 @@ import profileImg from "../../assets/user.svg";
 import { v4 as uuidv4 } from "uuid";
 import { databases } from "../../appwrite/appwriteConfig";
 import Post from "../Post/Post";
+import config from "../../config/config";
 
 const PostForm = () => {
   const [post, setPost] = useState();
@@ -12,8 +13,8 @@ const PostForm = () => {
     e.preventDefault();
 
     const promise = databases.createDocument(
-      "6648c89f00135cfcab19",
-      "6648c8b6001e2ac3de30",
+      config.appwriteDatabaseId,
+      config.appwriteColllectionId,
       uuidv4(),
       {
         post,

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { databases } from "../../appwrite/appwriteConfig";
+import config from "../../config/config";
 
 const Post = ({ posts, setPosts }) => {
   // console.log(posts);
@@ -16,8 +17,8 @@ const Post = ({ posts, setPosts }) => {
     try {
       setLoader(true);
       const response = await databases.listDocuments(
-        "6648c89f00135cfcab19",
-        "6648c8b6001e2ac3de30"
+        config.appwriteDatabaseId,
+        config.appwriteColllectionId,
       );
       console.log(response.documents);
       setPosts(response.documents);
@@ -55,8 +56,8 @@ const Post = ({ posts, setPosts }) => {
         if (result.isConfirmed) {
           const updatedPost = { post: editContent };
           const response = await databases.updateDocument(
-            "6648c89f00135cfcab19",
-            "6648c8b6001e2ac3de30",
+            config.appwriteDatabaseId,
+            config.appwriteColllectionId,
             id,
             updatedPost
           );
@@ -93,8 +94,8 @@ const Post = ({ posts, setPosts }) => {
             icon: "success",
           });
           await databases.deleteDocument(
-            "6648c89f00135cfcab19",
-            "6648c8b6001e2ac3de30",
+            config.appwriteDatabaseId,
+            config.appwriteColllectionId,
             id
           );
           setPosts(posts.filter((post) => post.$id !== id));
